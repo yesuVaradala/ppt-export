@@ -1,0 +1,12 @@
+<div class="chart-container">
+  <h3>Waterfall Chart</h3>
+  <div class="waterfall">
+    <div *ngFor="let bar of bars" class="waterfall-bar-wrapper">
+      <div class="waterfall-spacer" [style.height.%]="bar.start"></div>
+      <div class="waterfall-bar" [style.height.%]="bar.height" [class.positive]="bar.isPositive" [class.negative]="!bar.isPositive">
+        {{ bar.value }}
+      </div>
+      <span class="waterfall-label">{{ bar.label }}</span>
+    </div>
+  </div>
+</div>

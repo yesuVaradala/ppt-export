@@ -1,0 +1,13 @@
+<div class="chart-container">
+  <h3>{{ title }}</h3>
+  <div class="bars-container">
+    <div *ngFor="let bar of bars" class="bar-group">
+      <div class="bar-stack">
+        <div *ngFor="let seg of bar.segments" class="bar-segment"
+          [style.height.%]="seg.value"
+          [style.background]="seg.color"></div>
+      </div>
+      <span class="bar-label">{{ bar.label }}</span>
+    </div>
+  </div>
+</div>

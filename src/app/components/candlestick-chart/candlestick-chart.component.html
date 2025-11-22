@@ -1,0 +1,9 @@
+<div class="chart-container">
+  <h3>Candlestick Chart</h3>
+  <div class="candlestick-container">
+    <div *ngFor="let candle of candles" class="candle">
+      <div class="wick" [style.bottom.%]="candle.low" [style.height.%]="candle.high - candle.low"></div>
+      <div class="body" [style.bottom.%]="candle.bodyBottom" [style.height.%]="candle.bodyHeight" [class.up]="candle.isUp" [class.down]="!candle.isUp"></div>
+    </div>
+  </div>
+</div>

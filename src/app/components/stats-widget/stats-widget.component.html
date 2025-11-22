@@ -1,0 +1,14 @@
+<div class="stats-widget" [style.border-left-color]="color">
+  <div class="stats-icon" [style.background]="color">{{ icon }}</div>
+  <div class="stats-content">
+    <div class="stats-title">{{ title }}</div>
+    <div class="stats-value">{{ value }}</div>
+    <div class="stats-subtitle" *ngIf="subtitle">{{ subtitle }}</div>
+    <div class="stats-trend" *ngIf="trendValue" [ngClass]="'trend-' + trend">
+      <span *ngIf="trend === 'up'">↑</span>
+      <span *ngIf="trend === 'down'">↓</span>
+      <span *ngIf="trend === 'neutral'">→</span>
+      {{ trendValue }}
+    </div>
+  </div>
+</div>

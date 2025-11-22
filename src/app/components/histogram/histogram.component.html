@@ -1,0 +1,9 @@
+<div class="chart-container">
+  <h3>Histogram</h3>
+  <div class="histogram">
+    <div *ngFor="let bar of bars" class="hist-bar-wrapper">
+      <div class="hist-bar" [style.height.%]="bar.height"></div>
+      <span class="hist-label">{{ bar.range }}</span>
+    </div>
+  </div>
+</div>

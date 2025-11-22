@@ -1,0 +1,63 @@
+.chart-container {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: 100%;
+}
+
+h3 {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  color: #333;
+  font-weight: 600;
+  text-align: center;
+}
+
+.donut-svg {
+  width: 200px;
+  height: 200px;
+  display: block;
+  margin: 0 auto 20px;
+  transform: rotate(-90deg);
+}
+
+.donut-segment {
+  fill: none;
+  stroke-width: 6;
+  transition: opacity 0.3s;
+  cursor: pointer;
+}
+
+.donut-segment:hover {
+  opacity: 0.7;
+}
+
+.donut-text {
+  font-size: 8px;
+  font-weight: bold;
+  fill: #333;
+  text-anchor: middle;
+  transform: rotate(90deg);
+  transform-origin: center;
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+}

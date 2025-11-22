@@ -1,0 +1,8 @@
+<div class="chart-container">
+  <h3>TreeMap</h3>
+  <div class="treemap">
+    <div *ngFor="let box of boxes" class="treemap-box" [style.flex]="box.size" [style.background]="box.color">
+      {{ box.label }}<br>{{ box.size }}%
+    </div>
+  </div>
+</div>

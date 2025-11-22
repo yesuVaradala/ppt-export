@@ -1,0 +1,85 @@
+<div class="wizard-container" [ngClass]="'wizard-' + size">
+  <div class="wizard-header">
+    <h2>{{ title }}</h2>
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="progress"></div>
+    </div>
+  </div>
+
+  <div class="wizard-steps">
+    <div class="step-indicator">
+      <div 
+        *ngFor="let step of [1, 2, 3, 4]" 
+        class="step-circle"
+        [ngClass]="{
+          'active': step === currentStep,
+          'completed': step < currentStep
+        }"
+        (click)="goToStep(step)">
+        <span>{{ step }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="wizard-content">
+    <div *ngIf="currentStep === 1" class="step-content">
+      <h3>Step 1: Getting Started</h3>
+      <p>Welcome to the wizard! Let's begin your journey.</p>
+      <ul>
+        <li>Configure basic settings</li>
+        <li>Set your preferences</li>
+        <li>Review initial options</li>
+      </ul>
+    </div>
+
+    <div *ngIf="currentStep === 2" class="step-content">
+      <h3>Step 2: Configuration</h3>
+      <p>Configure your settings and preferences.</p>
+      <div class="form-group">
+        <label>Project Name:</label>
+        <input type="text" placeholder="Enter project name" />
+      </div>
+      <div class="form-group">
+        <label>Description:</label>
+        <textarea placeholder="Enter description"></textarea>
+      </div>
+    </div>
+
+    <div *ngIf="currentStep === 3" class="step-content">
+      <h3>Step 3: Review</h3>
+      <p>Review your selections and make any necessary changes.</p>
+      <div class="review-section">
+        <div class="review-item">
+          <strong>Project Name:</strong> Sample Project
+        </div>
+        <div class="review-item">
+          <strong>Status:</strong> Ready to proceed
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="currentStep === 4" class="step-content">
+      <h3>Step 4: Complete</h3>
+      <p>🎉 Congratulations! Setup is complete.</p>
+      <div class="success-message">
+        <p>Your wizard has been completed successfully!</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wizard-footer">
+    <button 
+      class="btn btn-secondary" 
+      (click)="previousStep()" 
+      [disabled]="currentStep === 1">
+      Previous
+    </button>
+    <span class="step-counter">Step {{ currentStep }} of {{ totalSteps }}</span>
+    <button 
+      class="btn btn-primary" 
+      (click)="nextStep()" 
+      [disabled]="currentStep === totalSteps">
+      {{ currentStep === totalSteps ? 'Finish' : 'Next' }}
+    </button>
+  </div>
+</div>

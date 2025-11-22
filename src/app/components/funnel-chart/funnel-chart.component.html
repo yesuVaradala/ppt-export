@@ -1,0 +1,9 @@
+<div class="chart-container">
+  <h3>Funnel Chart</h3>
+  <div class="funnel">
+    <div *ngFor="let stage of stages" class="funnel-stage" [style.width.%]="stage.width" [style.background]="stage.color">
+      <span>{{ stage.label }}</span>
+      <span>{{ stage.value }}%</span>
+    </div>
+  </div>
+</div>

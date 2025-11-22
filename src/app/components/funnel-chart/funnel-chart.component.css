@@ -1,0 +1,5 @@
+.chart-container { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); height: 100%; }
+h3 { margin: 0 0 20px 0; font-size: 18px; color: #333; font-weight: 600; }
+.funnel { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+.funnel-stage { padding: 16px; color: white; display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; transition: transform 0.3s; cursor: pointer; }
+.funnel-stage:hover { transform: scale(1.05); }

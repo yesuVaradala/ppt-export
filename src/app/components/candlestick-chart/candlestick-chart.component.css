@@ -1,0 +1,8 @@
+.chart-container { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); height: 100%; }
+h3 { margin: 0 0 20px 0; font-size: 18px; color: #333; font-weight: 600; }
+.candlestick-container { display: flex; gap: 8px; height: 200px; align-items: flex-end; }
+.candle { position: relative; flex: 1; height: 100%; }
+.wick { position: absolute; width: 2px; left: 50%; transform: translateX(-50%); background: #666; }
+.body { position: absolute; width: 100%; border: 2px solid #000; }
+.up { background: #4caf50; }
+.down { background: #f44336; }

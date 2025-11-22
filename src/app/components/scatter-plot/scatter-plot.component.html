@@ -1,0 +1,10 @@
+<div class="chart-container">
+  <h3>{{ title }}</h3>
+  <svg viewBox="0 0 100 100" class="scatter-svg">
+    <circle *ngFor="let point of points"
+      [attr.cx]="point.x"
+      [attr.cy]="100 - point.y"
+      [attr.r]="point.size"
+      class="scatter-point" />
+  </svg>
+</div>

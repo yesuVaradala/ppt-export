@@ -1,0 +1,7 @@
+<div class="chart-container">
+  <h3>Radar Chart</h3>
+  <svg viewBox="0 0 100 100" class="radar-svg">
+    <polygon [attr.points]="points" class="radar-shape" />
+    <text *ngFor="let label of labels" [attr.x]="label.x" [attr.y]="label.y" class="radar-label">{{ label.text }}</text>
+  </svg>
+</div>

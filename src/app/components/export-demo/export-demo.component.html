@@ -1,0 +1,25 @@
+<div class="export-demo-container">
+  <button class="download-button" (click)="downloadWidgets()" [disabled]="isGenerating">
+    <span class="download-icon">⬇</span>
+    <span class="download-text">{{ isGenerating ? 'Generating...' : 'Download Widgets' }}</span>
+  </button>
+
+  <div class="widgets-list">
+    <div class="demo-widget card">
+      <h3>Card Widget</h3>
+      <p>This is a simple card widget.</p>
+    </div>
+    <div class="demo-widget chart">
+      <h3>Chart Widget</h3>
+      <div style="width:100px;height:60px;background:#e3f2fd;border-radius:8px;"></div>
+    </div>
+    <div class="demo-widget info">
+      <h3>Info Widget</h3>
+      <p>Some info here.</p>
+    </div>
+    <div class="demo-widget box">
+      <h3>Box Widget</h3>
+      <div style="width:80px;height:80px;background:#ffe082;border-radius:8px;"></div>
+    </div>
+  </div>
+</div>

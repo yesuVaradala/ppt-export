@@ -1,0 +1,7 @@
+<div class="chart-container">
+  <h3>{{ title }}</h3>
+  <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="area-svg">
+    <path [attr.d]="areaPath" class="area-fill" />
+    <path [attr.d]="pathData" class="area-line" />
+  </svg>
+</div>

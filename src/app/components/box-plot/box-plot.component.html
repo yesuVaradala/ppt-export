@@ -1,0 +1,12 @@
+<div class="chart-container">
+  <h3>Box Plot</h3>
+  <div class="box-plot-container">
+    <div *ngFor="let plot of plots" class="box-plot">
+      <div class="whisker" [style.bottom.%]="plot.min" [style.height.%]="plot.q1 - plot.min"></div>
+      <div class="box" [style.bottom.%]="plot.q1" [style.height.%]="plot.q3 - plot.q1"></div>
+      <div class="median" [style.bottom.%]="plot.median"></div>
+      <div class="whisker" [style.bottom.%]="plot.q3" [style.height.%]="plot.max - plot.q3"></div>
+      <span class="box-label">{{ plot.label }}</span>
+    </div>
+  </div>
+</div>

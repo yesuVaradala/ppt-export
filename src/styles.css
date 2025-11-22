@@ -1,0 +1,51 @@
+.chart-item {
+  background: #fff !important;
+  border-radius: 8px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+}
+
+/* You can add global styles to this file, and also import other style files */
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+html, body {
+  height: 100%;
+}
+
+/* Enhanced rendering for charts */
+svg {
+  shape-rendering: geometricPrecision;
+  text-rendering: geometricPrecision;
+}
+
+.chart-widget, .chart-item, [class*="chart"] {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Crisp text rendering for all chart text */
+.bar-value, .bar-label, h3, text, span, div {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: always;
+}
+
+/* Make sure colors are vibrant */
+.chart-item {
+  color-rendering: optimizeQuality;
+}
+

@@ -1,0 +1,9 @@
+<div class="chart-container">
+  <h3>Bubble Chart</h3>
+  <svg viewBox="0 0 100 100" class="bubble-svg">
+    <circle *ngFor="let bubble of bubbles"
+      [attr.cx]="bubble.x" [attr.cy]="100 - bubble.y"
+      [attr.r]="bubble.size" [attr.fill]="bubble.color"
+      class="bubble" />
+  </svg>
+</div>

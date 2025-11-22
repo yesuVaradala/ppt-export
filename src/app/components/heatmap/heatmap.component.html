@@ -1,0 +1,6 @@
+<div class="chart-container">
+  <h3>Heatmap</h3>
+  <div class="heatmap-grid">
+    <div *ngFor="let cell of cells" class="heatmap-cell" [style.background]="cell.color" [title]="cell.day + ' ' + cell.hour"></div>
+  </div>
+</div>
