@@ -43,3 +43,13 @@
   margin: 0 0 8px 0;
   font-size: 20px;
 }
+
+/* New demo styles */
+.demo-header { display:flex; align-items:center; justify-content:space-between; gap:12px }
+.demo-header h2 { margin:0; font-size:18px }
+.demo-card { background:white; padding:16px; border-radius:8px; box-shadow:0 8px 24px rgba(18,18,18,0.06); margin-top:16px }
+canvas { width:100% !important; height:400px !important }
+.controls { display:flex; gap:8px; margin-top:12px }
+button { padding:8px 12px; border-radius:6px; border:1px solid #ccc; background:#fff; cursor:pointer }
+button.primary { background:#0078d4; color:white; border-color:transparent }
+.note { margin-top:10px; color:#555 }
