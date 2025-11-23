@@ -25,10 +25,10 @@ export class AreaChartComponent implements OnInit {
   }
 
   createPaths() {
-    const linePath = this.points.map((p, i) => 
+    const linePath = this.points.map((p, i) =>
       `${i === 0 ? 'M' : 'L'} ${p.x} ${100 - p.y}`
     ).join(' ');
-    
+
     this.pathData = linePath;
     this.areaPath = `${linePath} L 100 100 L 0 100 Z`;
   }

@@ -1,55 +1,3 @@
-// Reusable helper for PPT export
-export async function exportWidgetsToPPT(widgetSelectors: string[]) {
-  const pptx = new pptxgen();
-  pptx.layout = 'LAYOUT_16x9';
-  const slideW = 10; // pptxgen default width in inches for 16x9
-  const slideH = 5.625; // pptxgen default height in inches for 16x9
-
-  for (const selector of widgetSelectors) {
-    const widget = document.querySelector(selector) as HTMLElement;
-    if (!widget) continue;
-
-    let imageData: string | undefined;
-    // Canvas widget: use native toDataURL for sharpness
-    const canvasEl = widget.querySelector('canvas');
-    if (canvasEl && canvasEl instanceof HTMLCanvasElement) {
-      imageData = canvasEl.toDataURL('image/png', 1.0);
-    } else {
-      // HTML/SVG widget: use html2canvas
-      const canvas = await html2canvas(widget, {
-        useCORS: true,
-        allowTaint: false,
-        scale: 2,
-        backgroundColor: '#fff'
-      });
-      imageData = canvas.toDataURL('image/png', 1.0);
-    }
-
-    if (imageData) {
-      // Proportional layout: fit image to slide, maintain aspect ratio
-      const slide = pptx.addSlide();
-  // slideW and slideH already defined above
-
-      // Get widget aspect ratio
-      const img = new Image();
-      img.src = imageData;
-      await new Promise(resolve => { img.onload = resolve; });
-
-      let w = slideW * 0.8;
-      let h = (img.height / img.width) * w;
-      if (h > slideH * 0.7) {
-        h = slideH * 0.7;
-        w = (img.width / img.height) * h;
-      }
-      const x = (slideW - w) / 2;
-      const y = (slideH - h) / 2;
-
-      slide.addImage({ data: imageData, x, y, w, h });
-    }
-  }
-
-  pptx.writeFile({ fileName: 'dashboard_export.pptx' });
-}
 import { Component } from '@angular/core';
 import { ChartWidgetComponent } from '../chart-widget/chart-widget.component';
 import { LineChartComponent } from '../line-chart/line-chart.component';
@@ -70,7 +18,6 @@ import { BoxPlotComponent } from '../box-plot/box-plot.component';
 import { CandlestickChartComponent } from '../candlestick-chart/candlestick-chart.component';
 import pptxgen from 'pptxgenjs';
 import html2canvas from 'html2canvas';
-import JSZip from 'jszip';
 
 @Component({
   selector: 'app-home',
@@ -95,15 +42,131 @@ import JSZip from 'jszip';
     CandlestickChartComponent
   ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-  
   isGenerating = false;
 
   async downloadData() {
-    // Example: select all widgets with class 'chart-item'
     const widgetSelectors = Array.from(document.querySelectorAll('.chart-item')).map((el, i) => `.chart-item:nth-of-type(${i+1})`);
-    await exportWidgetsToPPT(widgetSelectors);
+    await this.exportWidgetsToPPT(widgetSelectors);
+  }
+
+  async exportWidgetsToPPT(widgetSelectors: string[]) {
+    const pptx = new pptxgen();
+    pptx.layout = 'LAYOUT_16x9';
+    const slideW = 10;
+    const slideH = 5.625;
+    const widgets: Array<{el: HTMLElement, rect: DOMRect, imageData: string, width: number, height: number}> = [];
+
+    // Add a single title slide at the start
+    const titleSlide = pptx.addSlide();
+    titleSlide.addText('Complete Chart Library', {
+      x: 1.5, y: 1.5, w: 7, h: 1.2,
+      fontSize: 32, bold: true, align: 'center', color: '363636', fontFace: 'Arial'
+    });
+    titleSlide.addText(`Exported on ${new Date().toLocaleDateString()}`, {
+      x: 1.5, y: 2.8, w: 7, h: 0.7,
+      fontSize: 18, align: 'center', color: '666666', fontFace: 'Arial'
+    });
+    for (const selector of widgetSelectors) {
+      const widget = document.querySelector(selector) as HTMLElement;
+      if (!widget) continue;
+      let imageData: string | undefined;
+      const canvasEl = widget.querySelector('canvas');
+      const svgEl = widget.querySelector('.polar-svg');
+      if (svgEl) {
+        // Polar Area chart as SVG: render SVG to canvas with white background
+        const serializer = new XMLSerializer();
+        const svgString = serializer.serializeToString(svgEl);
+        const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(svgBlob);
+        const img = new window.Image();
+        img.src = url;
+        await new Promise(resolve => { img.onload = resolve; });
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = svgEl.clientWidth || 400;
+        tempCanvas.height = svgEl.clientHeight || 300;
+        const ctx = tempCanvas.getContext('2d');
+        if (ctx) {
+          ctx.fillStyle = '#fff';
+          ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+          ctx.drawImage(img, 0, 0, tempCanvas.width, tempCanvas.height);
+          imageData = tempCanvas.toDataURL('image/png', 1.0);
+        }
+        URL.revokeObjectURL(url);
+      } else if (canvasEl && canvasEl instanceof HTMLCanvasElement) {
+        imageData = canvasEl.toDataURL('image/png', 1.0);
+      } else {
+        // For non-canvas widgets, use html2canvas and set only widget background to white
+        const originalBg = widget.style.background;
+        widget.style.background = '#fff';
+        const overlays = widget.querySelectorAll('.overlay, .tooltip, .mask');
+        overlays.forEach(el => (el as HTMLElement).style.display = 'none');
+        const canvas = await html2canvas(widget, {
+          useCORS: true,
+          allowTaint: false,
+          scale: 2,
+          backgroundColor: '#fff'
+        });
+        imageData = canvas.toDataURL('image/png', 1.0);
+        widget.style.background = originalBg;
+        overlays.forEach(el => (el as HTMLElement).style.display = '');
+      }
+      if (imageData) {
+        const rect = widget.getBoundingClientRect();
+        const img = new window.Image();
+        img.src = imageData;
+        await new Promise(resolve => { img.onload = resolve; });
+        widgets.push({ el: widget, rect, imageData, width: img.width, height: img.height });
+      }
+    }
+    // Group widgets by row using their top position
+    const rowThreshold = 30;
+    let rows: Array<Array<typeof widgets[0]>> = [];
+    let currentRow: Array<typeof widgets[0]> = [];
+    let lastTop: number|null = null;
+    for (const w of widgets) {
+      if (lastTop === null || Math.abs(w.rect.top - lastTop) < rowThreshold) {
+        currentRow.push(w);
+        lastTop = w.rect.top;
+      } else {
+        rows.push(currentRow);
+        currentRow = [w];
+        lastTop = w.rect.top;
+      }
+    }
+    if (currentRow.length) rows.push(currentRow);
+    // Place rows on slides, matching browser layout
+    const widgetPadding = 0.2;
+    const rowPadding = 0.3;
+    const maxRowsPerSlide = 2;
+    let slideRows: Array<Array<Array<typeof widgets[0]>>> = [];
+    for (let i = 0; i < rows.length; i += maxRowsPerSlide) {
+      slideRows.push(rows.slice(i, i + maxRowsPerSlide));
+    }
+    for (const slideRowGroup of slideRows) {
+      const slide = pptx.addSlide();
+      const totalRowCount = slideRowGroup.length;
+      let y = rowPadding;
+      for (const row of slideRowGroup) {
+        const widgetsInRow = row.length;
+        const widgetW = (slideW - (widgetsInRow + 1) * widgetPadding) / widgetsInRow;
+        const widgetH = (slideH - (totalRowCount + 1) * rowPadding) / totalRowCount;
+        for (let col = 0; col < row.length; col++) {
+          const w = row[col];
+          let x = widgetPadding + col * (widgetW + widgetPadding);
+          const aspect = w.width / w.height;
+          let finalW = widgetW, finalH = widgetH;
+          if (finalW / finalH > aspect) finalW = finalH * aspect;
+          else finalH = finalW / aspect;
+          x += (widgetW - finalW) / 2;
+          let yCell = y + (widgetH - finalH) / 2;
+          slide.addImage({ data: w.imageData, x, y: yCell, w: finalW, h: finalH });
+        }
+        y += widgetH + rowPadding;
+      }
+    }
+    pptx.writeFile({ fileName: 'dashboard_export.pptx' });
   }
 }
