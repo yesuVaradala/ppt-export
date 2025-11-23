@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 export class WizardComponent {
   @Input() size: 'small' | 'medium' | 'large' | 'extra-large' = 'medium';
   @Input() title: string = 'Setup Wizard';
-  
+
   currentStep: number = 1;
   totalSteps: number = 4;
 

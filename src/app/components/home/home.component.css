@@ -99,30 +99,35 @@
 }
 
 .chart-item {
-  animation: fadeIn 0.5s ease-in;
+  /* animation: fadeIn 0.5s ease-in; */
   border-radius: 12px;
-  overflow: hidden;
+  /* overflow: hidden; */
+  background: #fff;
 }
 
 /* Size Variations */
 .chart-item.small {
   grid-column: span 3;
   min-height: 280px;
+  background: #fff;
 }
 
 .chart-item.medium {
   grid-column: span 4;
   min-height: 350px;
+  background: #fff;
 }
 
 .chart-item.large {
   grid-column: span 6;
   min-height: 400px;
+  background: #fff;
 }
 
 .chart-item.extra-large {
   grid-column: span 12;
   min-height: 450px;
+  background: #fff;
 }
 
 @keyframes fadeIn {
@@ -183,11 +188,11 @@
   .chart-item.small {
     grid-column: span 4;
   }
-  
+
   .chart-item.medium {
     grid-column: span 6;
   }
-  
+
   .chart-item.large {
     grid-column: span 8;
   }
@@ -197,19 +202,19 @@
   .charts-grid {
     grid-template-columns: repeat(8, 1fr);
   }
-  
+
   .chart-item.small {
     grid-column: span 4;
   }
-  
+
   .chart-item.medium {
     grid-column: span 4;
   }
-  
+
   .chart-item.large {
     grid-column: span 8;
   }
-  
+
   .chart-item.extra-large {
     grid-column: span 8;
   }

@@ -14,7 +14,7 @@ Chart.register(...registerables);
 export class ChartWidgetComponent implements OnInit, AfterViewInit {
   @Input() title: string = 'Bar Chart';
   @ViewChild('chartCanvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
-  
+
   chart?: Chart;
   chartData = {
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -23,7 +23,7 @@ export class ChartWidgetComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     // Generate fixed data
-    this.chartData.values = this.chartData.labels.map(() => 
+    this.chartData.values = this.chartData.labels.map(() =>
       Math.floor(Math.random() * 100) + 20
     );
   }

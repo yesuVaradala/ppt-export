@@ -14,7 +14,7 @@ export class HeatmapComponent implements OnInit {
   ngOnInit() {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     const hours = ['6am', '12pm', '6pm'];
-    
+
     days.forEach((day, i) => {
       hours.forEach((hour, j) => {
         this.cells.push({

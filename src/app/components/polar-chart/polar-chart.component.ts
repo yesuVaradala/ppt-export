@@ -15,7 +15,7 @@ export class PolarChartComponent implements OnInit {
   ngOnInit() {
     const values = [30, 25, 35, 20, 28, 22];
     const angleStep = 360 / values.length;
-    
+
     this.slices = values.map((val, i) => {
       const angle = i * angleStep;
       return {
