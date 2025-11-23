@@ -16,7 +16,7 @@ export class RadarChartComponent implements OnInit {
     const categories = ['Speed', 'Power', 'Defense', 'Agility', 'Intelligence'];
     const values = categories.map(() => Math.random() * 40 + 10);
     const angleStep = 360 / categories.length;
-    
+
     this.points = values.map((val, i) => {
       const angle = (i * angleStep - 90) * Math.PI / 180;
       const x = 50 + val * Math.cos(angle);

@@ -14,7 +14,7 @@ export class WaterfallChartComponent implements OnInit {
   ngOnInit() {
     const values = [50, 20, -15, 30, -10, 25];
     let running = 0;
-    
+
     this.bars = values.map((val, i) => {
       const start = running;
       running += val;

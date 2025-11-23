@@ -17,7 +17,7 @@ export class CandlestickChartComponent implements OnInit {
       const close = Math.random() * 50 + 25;
       const high = Math.max(open, close) + Math.random() * 15;
       const low = Math.min(open, close) - Math.random() * 15;
-      
+
       this.candles.push({
         open, close, high, low,
         isUp: close > open,

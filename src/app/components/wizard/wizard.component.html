@@ -8,8 +8,8 @@
 
   <div class="wizard-steps">
     <div class="step-indicator">
-      <div 
-        *ngFor="let step of [1, 2, 3, 4]" 
+      <div
+        *ngFor="let step of [1, 2, 3, 4]"
         class="step-circle"
         [ngClass]="{
           'active': step === currentStep,
@@ -68,16 +68,16 @@
   </div>
 
   <div class="wizard-footer">
-    <button 
-      class="btn btn-secondary" 
-      (click)="previousStep()" 
+    <button
+      class="btn btn-secondary"
+      (click)="previousStep()"
       [disabled]="currentStep === 1">
       Previous
     </button>
     <span class="step-counter">Step {{ currentStep }} of {{ totalSteps }}</span>
-    <button 
-      class="btn btn-primary" 
-      (click)="nextStep()" 
+    <button
+      class="btn btn-primary"
+      (click)="nextStep()"
       [disabled]="currentStep === totalSteps">
       {{ currentStep === totalSteps ? 'Finish' : 'Next' }}
     </button>
