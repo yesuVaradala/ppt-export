@@ -38,6 +38,7 @@
 import { Injectable } from '@angular/core';
 import pptxgen from 'pptxgenjs';
 import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 @Injectable({ providedIn: 'root' })
 export class ExportDashboardService {
@@ -105,6 +106,91 @@ export class ExportDashboardService {
     }
     pptx.writeFile({ fileName: 'dashboard_export.pptx' });
   }
+
+  /**
+   * Export widgets to PDF file (16:9 landscape).
+   * @param widgetSelectors Array of CSS selectors for widgets to export
+   * @param title Title for the PDF (optional)
+   */
+  async exportToPDF(widgetSelectors: string[], title: string = 'Dashboard Export') {
+    const pdf = new jsPDF({
+      orientation: 'landscape',
+      unit: 'mm',
+      format: [297, 167] // 16:9 aspect ratio
+    });
+
+    const pageW = 297;
+    const pageH = 167;
+
+    // Add title page
+    pdf.setFontSize(32);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text(title, pageW / 2, pageH / 2 - 10, { align: 'center' });
+    
+    pdf.setFontSize(18);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text(`Exported on ${new Date().toLocaleDateString()}`, pageW / 2, pageH / 2 + 10, { align: 'center' });
+
+    // Export widgets
+    for (const selector of widgetSelectors) {
+      const widget = document.querySelector(selector) as HTMLElement;
+      if (!widget) continue;
+
+      let imageData: string | undefined;
+      const canvasEl = widget.querySelector('canvas');
+      const svgEl = widget.querySelector('svg');
+
+      if (svgEl) {
+        // SVG export
+        const serializer = new XMLSerializer();
+        const svgString = serializer.serializeToString(svgEl);
+        const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(svgBlob);
+        const img = new window.Image();
+        img.src = url;
+        await new Promise(resolve => { img.onload = resolve; });
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = svgEl.clientWidth || 400;
+        tempCanvas.height = svgEl.clientHeight || 300;
+        const ctx = tempCanvas.getContext('2d');
+        if (ctx) {
+          ctx.fillStyle = '#fff';
+          ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+          ctx.drawImage(img, 0, 0, tempCanvas.width, tempCanvas.height);
+          imageData = tempCanvas.toDataURL('image/png', 1.0);
+        }
+        URL.revokeObjectURL(url);
+      } else if (canvasEl && canvasEl instanceof HTMLCanvasElement) {
+        imageData = canvasEl.toDataURL('image/png', 1.0);
+      } else {
+        // html2canvas fallback
+        const originalBg = widget.style.background;
+        widget.style.background = '#fff';
+        const overlays = widget.querySelectorAll('.overlay, .tooltip, .mask');
+        overlays.forEach(el => (el as HTMLElement).style.display = 'none');
+        const canvas = await html2canvas(widget, {
+          useCORS: true,
+          allowTaint: false,
+          scale: 2,
+          backgroundColor: '#fff'
+        });
+        imageData = canvas.toDataURL('image/png', 1.0);
+        widget.style.background = originalBg;
+        overlays.forEach(el => (el as HTMLElement).style.display = '');
+      }
+
+      if (imageData) {
+        pdf.addPage();
+        // Center image on page with margins
+        const margin = 13; // ~0.5 inch margin
+        const imgW = pageW - (margin * 2);
+        const imgH = pageH - (margin * 2);
+        pdf.addImage(imageData, 'PNG', margin, margin, imgW, imgH);
+      }
+    }
+
+    pdf.save('dashboard_export.pdf');
+  }
 }
 
 /**
@@ -116,6 +202,9 @@ export class ExportDashboardService {
  * 2. Call exportToPPT when button is clicked:
  *    this.exportService.exportToPPT(['.chart-item', '.polar-svg'], 'My Dashboard');
  *
+ * 3. Call exportToPDF for PDF export:
+ *    this.exportService.exportToPDF(['.chart-item', '.polar-svg'], 'My Dashboard');
+ *
  *  - Pass an array of widget selectors to export.
- *  - Optionally pass a custom title for the PPTX.
+ *  - Optionally pass a custom title for the PPTX/PDF.
  */

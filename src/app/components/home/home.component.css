@@ -5,10 +5,16 @@
   position: relative;
 }
 
-.download-button {
+.button-group {
   position: fixed;
   top: 24px;
   right: 24px;
+  display: flex;
+  gap: 12px;
+  z-index: 1000;
+}
+
+.download-button {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
@@ -22,8 +28,18 @@
   gap: 10px;
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
   transition: all 0.3s ease;
-  z-index: 1000;
   overflow: hidden;
+  position: relative;
+}
+
+.pdf-button {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+}
+
+.pdf-button:hover {
+  background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+  box-shadow: 0 6px 20px rgba(245, 87, 108, 0.6);
 }
 
 .download-button::before {

@@ -1,8 +1,15 @@
 <div class="home-container">
-  <button class="download-button" (click)="downloadData()">
-    <span class="download-icon">⬇</span>
-    <span class="download-text">Download</span>
-  </button>
+  <div class="button-group">
+    <button class="download-button" (click)="downloadData()">
+      <span class="download-icon">⬇</span>
+      <span class="download-text">Download PPT</span>
+    </button>
+
+    <button class="download-button pdf-button" (click)="downloadPDF()">
+      <span class="download-icon">📄</span>
+      <span class="download-text">Download PDF</span>
+    </button>
+  </div>
 
   <div class="header">
     <h1>📊 Complete Chart Library</h1>
